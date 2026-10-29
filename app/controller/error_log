@@ -1,0 +1,14 @@
+[24-Jun-2023 17:03:04 UTC] PHP Warning:  Use of undefined constant utf8 - assumed 'utf8' (this will throw an Error in a future version of PHP) in /home/corpora6/public_html/app/model/bd_conexion.php on line 8
+[24-Jun-2023 17:03:04 UTC] PHP Notice:  date_default_timezone_set(): Timezone ID 'American/Lima' is invalid in /home/corpora6/public_html/app/model/bd_conexion.php on line 9
+[24-Jun-2023 17:05:10 UTC] PHP Warning:  Use of undefined constant utf8 - assumed 'utf8' (this will throw an Error in a future version of PHP) in /home/corpora6/public_html/app/model/bd_conexion.php on line 8
+[24-Jun-2023 17:05:10 UTC] PHP Notice:  date_default_timezone_set(): Timezone ID 'American/Lima' is invalid in /home/corpora6/public_html/app/model/bd_conexion.php on line 9
+[24-Jun-2023 18:03:52 UTC] PHP Warning:  Use of undefined constant utf8 - assumed 'utf8' (this will throw an Error in a future version of PHP) in /home/corpora6/public_html/app/model/bd_conexion.php on line 8
+[24-Jun-2023 18:03:52 UTC] PHP Notice:  date_default_timezone_set(): Timezone ID 'American/Lima' is invalid in /home/corpora6/public_html/app/model/bd_conexion.php on line 9
+[30-Jun-2023 16:43:27 UTC] PHP Warning:  Use of undefined constant utf8 - assumed 'utf8' (this will throw an Error in a future version of PHP) in /home/corpora6/public_html/app/model/bd_conexion.php on line 8
+[30-Jun-2023 16:43:27 UTC] PHP Notice:  date_default_timezone_set(): Timezone ID 'American/Lima' is invalid in /home/corpora6/public_html/app/model/bd_conexion.php on line 9
+[30-Jun-2023 16:44:07 UTC] PHP Warning:  Use of undefined constant utf8 - assumed 'utf8' (this will throw an Error in a future version of PHP) in /home/corpora6/public_html/app/model/bd_conexion.php on line 8
+[30-Jun-2023 16:44:07 UTC] PHP Notice:  date_default_timezone_set(): Timezone ID 'American/Lima' is invalid in /home/corpora6/public_html/app/model/bd_conexion.php on line 9
+[30-Jun-2023 17:23:09 UTC] PHP Warning:  Use of undefined constant utf8 - assumed 'utf8' (this will throw an Error in a future version of PHP) in /home/corpora6/public_html/app/model/bd_conexion.php on line 8
+[30-Jun-2023 17:23:09 UTC] PHP Notice:  date_default_timezone_set(): Timezone ID 'American/Lima' is invalid in /home/corpora6/public_html/app/model/bd_conexion.php on line 9
+[05-Jul-2023 01:41:30 UTC] PHP Warning:  Use of undefined constant utf8 - assumed 'utf8' (this will throw an Error in a future version of PHP) in /home/corpora6/public_html/app/model/bd_conexion.php on line 8
+[05-Jul-2023 01:41:30 UTC] PHP Notice:  date_default_timezone_set(): Timezone ID 'American/Lima' is invalid in /home/corpora6/public_html/app/model/bd_conexion.php on line 9

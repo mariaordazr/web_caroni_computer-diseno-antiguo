@@ -1,0 +1,510 @@
+/* 1. Importar Fuente Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+/* Forzar que el navegador imprima los colores de fondo siempre */
+html, body {
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important; /* Soporte para Chrome/Safari */
+}
+
+/* Fondo de la pantalla del visor (Gris oscuro para simular un lector de PDF) */
+.pdf-viewer-body {
+    font-family: 'Inter', sans-serif;
+    background-color: #525659;
+    padding: 20px;
+    color: #333;
+}
+
+.btn-print:hover { background: #5a6268; }
+.btn-download { background: #0d6efd; }
+.btn-download:hover { background: #0b5ed7; } */
+
+/* Contenedor principal de la hoja A4 */
+.pdf-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Ocultar barra al imprimir físicamente */
+@media print {
+    .pdf-toolbar { display: none !important; }
+    .pdf-viewer-body { background: white; padding: 0; }
+    .pdf-container { box-shadow: none; max-width: 100%; padding: 0; }
+    /* ... Tus estilos de impresión existentes (como ocultar la botonera) ... */
+
+    th {
+        background-color: #333 !important; /* Asegura el color gris del encabezado */
+        color: #f4f4f4 !important;
+        print-color-adjust: exact !important;
+        -webkit-print-color-adjust: exact !important;
+    }
+}
+
+/* =========================================
+   CABECERA Y META DATOS (Grayscale)
+   ========================================= */
+.pdf-header {
+    width: 100%;
+    margin-bottom: 25px;
+    display: table;
+    table-layout: fixed;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 15px;
+}
+
+.header-col { display: table-cell; vertical-align: top; }
+.col-logo { width: 35%; }
+.pdf-logo { max-width: 80px; height: auto; display: block; }
+.col-company-info { width: 65%; text-align: right; font-size: 11px; color: #555; }
+.co-name { font-size: 16px; font-weight: 700; color: #000; margin-bottom: 3px; text-transform: uppercase; }
+
+.pdf-meta { width: 100%; margin-bottom: 25px; display: table; table-layout: fixed; }
+.meta-box { display: table-cell; vertical-align: top; width: 50%; }
+
+.col-client-info { padding-right: 20px; }
+.client-label { font-weight: 700; text-transform: uppercase; color: #000; margin-bottom: 8px; display: block; }
+.client-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+.client-details { color: #555; font-size: 11px; }
+
+.col-nota-info { text-align: right; }
+.nota-box { display: inline-block; background: #f5f5f5; padding: 15px; border-radius: 5px; border: 1px solid #e0e0e0; text-align: left; min-width: 250px; }
+.nota-title { font-size: 18px; font-weight: 700; text-transform: uppercase; color: #000; margin-bottom: 8px; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+.nota-item { margin-bottom: 3px; }
+.nota-label { font-weight: 500; color: #555; }
+
+/* =========================================
+   TABLA DE ARTÍCULOS (Grayscale)
+   ========================================= */
+.pdf-items-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+.pdf-items-table th { background-color: #444; border: #333; color: white; font-weight: 500; text-transform: uppercase; font-size: 11px; padding: 10px; text-align: left; border: 1px solid #444; }
+.pdf-items-table td { padding: 10px; border-bottom: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; vertical-align: top; }
+.cell-und { text-align: center; width: 7%; }
+.cell-mod { width: 10%; }
+.cell-ser { width: 15%; }
+.cell-acc { width: 25%; }
+.cell-det { width: 25%; }
+.cell-fea { width: 25%; }
+.cell-des { width: 85%; }
+.cell-bud { width: 15%; }
+.pdf-items-table tbody tr:nth-child(even) { background-color: #fbfbfb; }
+
+/* =========================================
+   OBSERVACIONES (Amarillo Resaltado)
+   ========================================= */
+.pdf-notes {
+    margin-top: 20px;
+    background: #fff3cd; /* Amarillo claro */
+    border-left: 4px solid #ffc107; /* Borde izquierdo amarillo fuerte */
+    padding: 15px;
+    border-radius: 0 5px 5px 0;
+}
+
+.pdf-observations {
+    margin-top: 20px;
+    background: #f5f5f5; /* Gris claro */
+    border: #e0e0e0 solid 1px; /* Borde gris oscuro */
+    padding: 15px;
+    border-radius: 0 5px 5px 0;
+}
+
+.obs-label { font-weight: 700; margin-bottom: 5px; display: block; color: #656565; }
+.obs-text { color: #555; font-size: 11px; }
+
+/* .notes-label { font-weight: 700; margin: 5px 0; display: block; color: #856404; } */
+.notes-text { color: #555; font-size: 11px; }
+
+.pdf-footer { margin-top: 40px; text-align: center; font-size: 10px; color: #888; border-top: 1px solid #e0e0e0; padding-top: 15px; }
+
+/* =========================================
+   VENTANA MODAL DEL CORREO (ESTILO GMAIL)
+   ========================================= */
+.email-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.email-modal {
+    background: #fff;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+}
+
+.email-modal-header {
+    background: #323639;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.email-modal-header h3 { margin: 0; font-size: 16px; font-weight: 500; }
+.btn-close-modal { background: transparent; border: none; color: white; font-size: 20px; cursor: pointer; }
+
+.email-modal-body { padding: 20px; }
+.form-group { width: 100%;margin-bottom: 15px; display: flex; align-items: flex-start; border-bottom: 1px solid #eee; padding-bottom: 5px;}
+/* .form-group label { width: 60px; color: #666; font-size: 13px; } */
+.form-group label { font-weight: bold; font-size: 14px; color: #555; text-align: left; width: 100%; display: block; }
+.form-group input, .form-group textarea {
+    flex-grow: 1; border: none; outline: none; font-family: 'Roboto', sans-serif; font-size: 14px; color: #333; width: 100%;
+}
+.form-group textarea { resize: vertical; border-bottom: none; margin-top: 5px; line-height: 1.5; }
+.form-group.col { flex-direction: column; align-items: flex-start; border-bottom: none; }
+
+.attachment-pill {
+    display: inline-block; background: #f1f3f4; padding: 8px 12px; border-radius: 20px; font-size: 12px; color: #555; border: 1px solid #dadce0; margin-top: 10px;
+}
+
+.email-modal-footer {
+    padding: 15px 20px; background: #f8f9fa; text-align: right; border-top: 1px solid #eee;
+}
+
+.btn-send-mail {
+    background: #0b57d0; color: white; padding: 10px 25px; border: none; border-radius: 20px; cursor: pointer; font-weight: 500; transition: background 0.2s;
+}
+.btn-send-mail:hover { background: #0842a0; }
+.btn-send-mail:disabled { background: #a8c7fa; cursor: not-allowed; }
+
+body.pdf-viewer-body {
+    overflow-x: auto;
+}
+#invoice-content {
+    width: 800px !important; /* Forza el ancho tipo A4 */
+    max-width: none !important;
+    margin: 0 auto;
+}
+
+@media print {
+    .btn-gallery { display: none !important; }
+}
+.gallery-images-container {
+    display: flex; 
+    flex-direction: column; 
+    gap: 15px; 
+    max-height: 65vh; /* Le damos un poco más de alto al contenedor */
+    overflow-y: auto; 
+    padding-right: 10px;
+}
+.gallery-images-container img {
+    width: 100%; 
+    height: auto; 
+    max-height: 60vh; /* ¡ESTA ES LA CLAVE! Evita que una sola imagen se salga de la pantalla */
+    object-fit: contain; /* Mantiene la proporción de la imagen sin deformarla */
+    border-radius: 6px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #f8f9fa; /* Fondo suave por si la imagen es vertical */
+}
+
+.btn-tool {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.2s;
+    
+    /* Agregado para centrar ícono y texto */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* =========================================
+   BARRA DE HERRAMIENTAS Y BOTONES
+   ========================================= */
+.pdf-toolbar {
+    max-width: 800px;
+    margin: 0 auto 20px auto;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    background: #323639;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    
+    /* ESTO REPARA LOS CLICS: Obliga a la barra a estar por encima de la "caja invisible" del PDF */
+    position: relative; 
+    z-index: 50; 
+}
+
+/* Colores específicos para cada botón */
+.btn-gallery { background-color: #6a7177; color: #fff; }
+.btn-print { background-color: #0d6efd; color: #fff; }
+.btn-email { background-color: #ffc107; color: #fff; }
+
+.btn-wa { background-color: #25d366; color: #fff; }
+
+/* Efecto hover (al pasar el ratón) */
+.btn-gallery:hover { background-color: #5c636a; }
+.btn-print:hover { background-color: #0b5ed7; }
+.btn-email:hover { background-color: #e0a800; }
+.btn-wa:hover { background-color: #20bd5a; }
+
+/* Asegurar que los íconos de Boxicons hereden el color del texto (blanco o negro) */
+.btn-tool i {
+    color: #ffffff;
+}
+
+
+
+/* =========================================
+   RESPONSIVE PARA MÓVILES (Preparación para JS)
+   ========================================= */
+@media screen and (max-width: 820px) {
+    body.pdf-viewer-body {
+        padding: 10px;
+        overflow-x: hidden !important; 
+    }
+
+    .pdf-toolbar {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    /* --- NUEVO: Magia para los botones en móvil --- */
+    .btn-tool .btn-text {
+        display: none; /* Oculta el texto */
+    }
+    
+    .btn-tool {
+        padding: 10px 14px; /* Hace los botones más cuadrados */
+    }
+    
+    .btn-tool i {
+        font-size: 1.5rem; /* Aumenta el ícono para que sea fácil tocarlo */
+    }
+    /* ---------------------------------------------- */
+
+    #invoice-content {
+        /* Congelamos la hoja a su tamaño real de PC */
+        width: 800px !important;
+        min-width: 800px !important;
+        max-width: 800px !important;
+        margin: 0 !important;
+        padding: 40px !important; 
+        
+        /* Anclamos arriba a la izquierda para que al achicarse no se mueva */
+        transform-origin: top left;
+    }
+
+    /* --- NUEVO: Optimización del modal para móviles --- */
+    .modal-image-container {
+        height: 82vh; /* Le damos más altura a la caja en teléfonos */
+    }
+    
+    #modal-current-image {
+        max-width: 100% !important; /* Aprovecha el ancho completo del móvil */
+        max-height: 100% !important; /* Aprovecha el alto completo */
+    }
+}
+
+.email-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: rgba(0, 0, 0, 0.7); display: flex;
+    align-items: center; justify-content: center; z-index: 9999;
+}
+.email-modal {
+    background: #ffffff; border-radius: 8px; width: 90%; max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex;
+    flex-direction: column; overflow: hidden; font-family: Arial, sans-serif;
+    animation: modalFadeIn 0.3s ease-out forwards;
+}
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.email-modal-header {
+    background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #e0e0e0;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.email-modal-header h3 { margin: 0; font-size: 18px; color: #333; }
+.btn-close-modal { background: none; border: none; font-size: 28px; cursor: pointer; color: #888; line-height: 1; padding: 0; }
+.btn-close-modal:hover { color: #d32f2f; }
+.email-modal-body { padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group label { font-weight: bold; font-size: 14px; color: #555; }
+.form-group input, .form-group textarea { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: Arial, sans-serif; font-size: 14px; width: 100%; box-sizing: border-box; }
+.form-group input:focus, .form-group textarea:focus { border-color: #198754; outline: none; }
+.attachment-pill { background: #e8f5e9; color: #198754; padding: 10px; border-radius: 6px; font-size: 13px; text-align: center; border: 1px solid #c3e6cb; }
+.attachment-pill-wa { background: #ecfdf5; color: #25D366; padding: 10px; border-radius: 6px; font-size: 13px; text-align: center; border: 1px solid #a7f3d0; }
+.email-modal-footer { padding: 15px 20px; background: #f8f9fa; border-top: 1px solid #e0e0e0; text-align: right; }
+.btn-send-mail { background: #198754; color: white; border: none; padding: 10px 24px; border-radius: 4px; cursor: pointer; font-size: 15px; font-weight: bold; transition: background 0.2s; }
+.btn-send-mail:hover { background: #146c43; }
+.btn-send-mail:disabled { background: #999; cursor: not-allowed; }
+.btn-send-wa { background: #25D366; }
+.btn-send-wa:hover { background: #1da851; }
+
+
+
+
+/* ==========================================================================
+   VISOR DE IMÁGENES MODAL (Mismos estilos de product-detail)
+   ========================================================================== */
+.product-gallery-modal {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(15, 23, 42, 0.95);
+    z-index: 999999; display: none; /* Inicia oculto de forma directa */
+    flex-direction: column;
+    justify-content: center; align-items: center;
+    backdrop-filter: blur(4px);
+}
+/* La clase .is-open ya no es necesaria y la eliminamos */
+
+/* Botones de control (Cerrar, Prev, Next) */
+.modal-close-btn {
+    position: absolute; top: 25px; right: 25px;
+    background: rgba(255, 255, 255, 0.1); border: none; color: white;
+    font-size: 2rem; border-radius: 50%; width: 48px; height: 48px;
+    cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+}
+.modal-close-btn:hover { background: rgba(255, 255, 255, 0.25); }
+
+.modal-prev-btn, .modal-next-btn {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1); border: none; color: white;
+    font-size: 2.5rem; border-radius: 50%; width: 55px; height: 55px;
+    cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+}
+.modal-prev-btn { left: 25px; }
+.modal-next-btn { right: 25px; }
+.modal-prev-btn:hover, .modal-next-btn:hover { background: rgba(255, 255, 255, 0.25); }
+
+/* Contenedor central de la imagen (Preparado para Zoom de 1 Click) */
+.modal-image-container {
+    width: 100%; height: 75vh;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; position: relative;
+}
+
+#modal-current-image {
+    max-width: 90%; max-height: 90%;
+    object-fit: contain;
+    transition: transform 0.2s ease-out; /* Suavidad al hacer click */
+    cursor: zoom-in; /* Ícono de lupa con el (+) */
+    user-select: none;
+}
+#modal-current-image.is-zoomed {
+    cursor: zoom-out; /* Ícono de lupa con el (-) al estar ampliado */
+}
+
+/* FIX: Miniaturas estructuradas correctamente para evitar deformación */
+.modal-thumbnails-wrapper {
+    width: 100%; padding: 15px 0; overflow-x: auto;
+    display: flex; justify-content: center; z-index: 10;
+}
+.modal-thumbnails { display: flex; gap: 12px; }
+
+.thumbnail-item {
+    width: 70px; height: 70px; /* Ancho y alto estrictos */
+    flex-shrink: 0; /* IMPIDE QUE SE HAGAN UNA LÍNEA DELGADA */
+    border-radius: 6px; overflow: hidden;
+    cursor: pointer; border: 2px solid transparent;
+    opacity: 0.5; transition: all 0.2s;
+    background: #fff; display: block;
+}
+.thumbnail-item picture, .thumbnail-item img {
+    width: 100%; height: 100%;
+    object-fit: cover; /* Recorta la miniatura perfecta sin deformarla */
+    display: block;
+}
+.thumbnail-item.is-active, .thumbnail-item:hover {
+    opacity: 1; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.5);
+}
+
+/* Reglas estrictas para PDF */
+@media print {
+    .product-gallery-modal, .no-print { display: none !important; }
+    .only-print { display: block !important; }
+}
+@media screen {
+    .only-print { display: none !important; }
+}
+
+/* =========================================
+   AJUSTE PERFECTO PARA LA PANTALLA EN MÓVILES
+   ========================================= */
+@media screen and (max-width: 820px) {
+    /* 1. Bloqueo extremo para evitar que la pantalla se ensanche (El recorte mágico) */
+    html, body.pdf-viewer-body {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important; 
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin: 0 !important;
+        position: relative;
+    }
+
+    /* 2. Aseguramos que la barra superior respete el nuevo ancho */
+    .pdf-toolbar {
+        width: 92% !important;
+        max-width: 92% !important;
+        margin: 0 auto 15px auto !important;
+        box-sizing: border-box;
+    }
+}
+/* Pestañas del Modal (Top Center) */
+.modal-tabs-container {
+    position: absolute;
+    top: 25px;
+    display: flex;
+    gap: 15px;
+    z-index: 10;
+}
+.gallery-tab-btn {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+.gallery-tab-btn:hover { background: rgba(0, 0, 0, 0.8); }
+.gallery-tab-btn.active {
+    background: #0d6efd; /* Color azul activo */
+    border-color: #0d6efd;
+    font-weight: bold;
+}
+
+/* --- OCULTAR X DEL VISOR EN MÓVILES --- */
+@media (max-width: 768px) {
+    #receipt-modal-close {
+        display: none !important;
+    }
+}
+

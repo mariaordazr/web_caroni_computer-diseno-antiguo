@@ -1,0 +1,295 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # 1. Esto arregla la pantalla negra (oculta la lista de archivos)
+    Options -Indexes
+
+    # 2. Si alguien entra a la raíz (el dominio solo), enviarlo al index de public
+    RewriteRule ^$ public/index.php [L]
+
+    # 3. IMÁGENES Y ESTILOS: 
+    # Si el archivo que piden EXISTE realmente dentro de "public" (ej: logo.png), 
+    # entonces muéstralo directamente desde ahí.
+    RewriteCond %{DOCUMENT_ROOT}/public/$1 -f
+    RewriteRule ^(.*)$ public/$1 [L]
+
+    # 4. RUTAS VIRTUALES (El arreglo del 404):
+    # Si lo que piden NO es la carpeta "public" y no es un archivo real,
+    # envíalo a "public/index.php" para que tu PHP muestre la página correcta.
+    RewriteRule ^((?!public/).*)$ public/index.php [L,NC]
+</IfModule>
+
+# Mantén la compresión para velocidad (esto no rompía nada)
+; <IfModule mod_deflate.c>
+;     AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/json
+; </IfModule>
+
+
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     # Si la petición va a la raíz, envíala a public/index.php
+#     RewriteRule ^$ public/index.php [L]
+#     # Si la petición es cualquier otra cosa (y no empieza ya por public/), envíala a public/
+#     RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
+# </IfModule>
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php81” package as the default “PHP” programming language.
+# <IfModule mime_module>
+#   AddHandler application/x-httpd-ea-php81 .php .php8 .phtml
+# </IfModule>
+# php -- END cPanel-generated handler, do not edit
+
+<IfModule mod_deflate.c>
+  # Comprimir HTML, CSS, JavaScript, Textos, XML y fuentes
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/rss+xml
+  AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+  AddOutputFilterByType DEFLATE application/x-font
+  AddOutputFilterByType DEFLATE application/x-font-opentype
+  AddOutputFilterByType DEFLATE application/x-font-otf
+  AddOutputFilterByType DEFLATE application/x-font-truetype
+  AddOutputFilterByType DEFLATE application/x-font-ttf
+  AddOutputFilterByType DEFLATE application/x-javascript
+  AddOutputFilterByType DEFLATE application/xhtml+xml
+  AddOutputFilterByType DEFLATE application/xml
+  AddOutputFilterByType DEFLATE font/opentype
+  AddOutputFilterByType DEFLATE font/otf
+  AddOutputFilterByType DEFLATE font/ttf
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE image/x-icon
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/javascript
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE text/xml
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # Imágenes: caché por 1 año
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  
+  # CSS y JS: caché por 1 mes
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/pdf "access plus 1 month"
+  ExpiresByType text/x-javascript "access plus 1 month"
+  ExpiresByType application/x-shockwave-flash "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresDefault "access plus 2 days"
+</IfModule>
+
+#REDIRECT 301
+#------------------------------SECCIONES PRINCIPALES-----------------------------
+Redirect 301 /public/view/productos.php /productos
+Redirect 301 /public/view/servicios.php /servicios
+Redirect 301 /public/view/nosotros.php /nosotros
+Redirect 301 /public/view/envios.php /envios
+
+#------------------------------PRODUCTOS X CATEGORIA-----------------------------
+Redirect 301 /public/view/productos.php?id_categoria=2 /productos?search=&filter_choice=cat-2&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=3 /productos?search=&filter_choice=cat-3&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=4 /productos?search=&filter_choice=cat-4&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=5 /productos?search=&filter_choice=cat-5&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=1 /productos?search=&filter_choice=cat-1&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=6 /productos?search=&filter_choice=cat-6&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=7 /productos?search=&filter_choice=cat-7&sort=name-asc  
+Redirect 301 /public/view/productos.php?id_categoria=10 /productos?search=&filter_choice=cat-10&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=11 /productos?search=&filter_choice=cat-11&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=12 /productos?search=&filter_choice=cat-12&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=14 /productos?search=&filter_choice=cat-14&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=18 /productos?search=&filter_choice=cat-18&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=19 /productos?search=&filter_choice=cat-19&sort=name-asc  
+Redirect 301 /public/view/productos.php?id_categoria=20 /productos?search=&filter_choice=cat-20&sort=name-asc  
+Redirect 301 /public/view/productos.php?id_categoria=34 /productos?search=&filter_choice=cat-34&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=36 /productos?search=&filter_choice=cat-36&sort=name-asc  
+Redirect 301 /public/view/productos.php?id_categoria=37 /productos?search=&filter_choice=cat-37&sort=name-asc  
+Redirect 301 /public/view/productos.php?id_categoria=38 /productos?search=&filter_choice=cat-38&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=41 /productos?search=&filter_choice=cat-8&sort=name-asc  
+Redirect 301 /public/view/productos.php?id_categoria=42 /productos?search=&filter_choice=cat-42&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=43 /productos?search=&filter_choice=cat-43&sort=name-asc  
+Redirect 301 /public/view/productos.php?id_categoria=44 /productos?search=&filter_choice=cat-44&sort=name-asc  
+Redirect 301 /public/view/productos.php?id_categoria=45 /productos?search=&filter_choice=cat-45&sort=name-asc  
+Redirect 301 /public/view/productos.php?id_categoria=46 /productos?search=&filter_choice=cat-46&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=47 /productos?search=&filter_choice=cat-47&sort=name-asc
+
+#------------------------------PRODUCTOS X CATEGORIA Y MARCA-----------------------------
+#------------------------------TECLADOS------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=1&id_marca=4 /productos?search=&filter_choice=cat-1-brand-4&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=1&id_marca=2 /productos?search=&filter_choice=cat-1-brand-2&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=1&id_marca=5 /productos?search=&filter_choice=cat-1-brand-5&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=1&id_marca=6 /productos?search=&filter_choice=cat-1-brand-6&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=1&id_marca=1 /productos?search=&filter_choice=cat-1-brand-1&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=1&id_marca=9 /productos?search=&filter_choice=cat-1-brand-9&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=1&id_marca=10 /productos?search=&filter_choice=cat-1-brand-10&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=1&id_marca=7 /productos?search=&filter_choice=cat-1-brand-7&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=1&id_marca=8 /productos?search=&filter_choice=cat-1-brand-8&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=1&id_marca=10 /productos?search=&filter_choice=cat-1-brand-3 
+
+#------------------------------CARGADOR------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=2&id_marca=5 /productos?search=&filter_choice=cat-2-brand-5&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=2&id_marca=6 /productos?search=&filter_choice=cat-2-brand-6&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=2&id_marca=2 /productos?search=&filter_choice=cat-2-brand-2&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=2&id_marca=1 /productos?search=&filter_choice=cat-2-brand-1&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=2&id_marca=14 /productos?search=&filter_choice=cat-2-brand-14&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=2&id_marca=15 /productos?search=&filter_choice=cat-2-brand-15&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=2&id_marca=7 /productos?search=&filter_choice=cat-2-brand-7&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=2&id_marca=8 /productos?search=&filter_choice=cat-2-brand-8&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=2&id_marca=4 /productos?search=&filter_choice=cat-2-brand-4&sort=name-asc 
+
+#------------------------------DC JACK------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=3&id_marca=5-brand-8&sort=name-asc APPLE
+Redirect 301 /public/view/productos.php?id_categoria=3&id_marca=6 /productos?search=&filter_choice=cat-3 
+Redirect 301 /public/view/productos.php?id_categoria=3&id_marca=1 /productos?search=&filter_choice=cat-3-brand-1&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=3&id_marca=7 /productos?search=&filter_choice=cat-3-brand-7&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=3&id_marca=4 /productos?search=&filter_choice=cat-3-brand-4&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=3&id_marca=25 /productos?search=&filter_choice=cat-3-brand-25&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=3&id_marca=2 /productos?search=&filter_choice=cat-3-brand-2&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=3&id_marca=14 /productos?search=&filter_choice=cat-3-brand-14&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=3&id_marca=5 /productos?search=&filter_choice=cat-3-brand-5&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=3&id_marca=26 /productos?search=&filter_choice=cat-3-brand-26&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=3&id_marca=27 /productos?search=&filter_choice=cat-3-brand-27&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=3&id_marca=28 /productos?search=&filter_choice=cat-3-brand-28&sort=name-asc 
+
+#------------------------------PARLANTES------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=4&id_marca=5 /productos?search=&filter_choice=cat-4APPLE
+Redirect 301 /public/view/productos.php?id_categoria=4&id_marca=5 /productos?search=&filter_choice=cat-4-brand-5&sort=name-asc
+
+#------------------------------RAM------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=5&id_marca=20 /productos?search=&filter_choice=cat-5-brand-20&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=5&id_marca=21 /productos?search=&filter_choice=cat-5-brand-21&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=5&id_marca=23 /productos?search=&filter_choice=cat-5-brand-23&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=5&id_marca=65 /productos?search=&filter_choice=cat-5 
+
+#------------------------------SSD------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=6&id_marca=11 /productos?search=&filter_choice=cat-6-brand-11&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=6&id_marca=13 /productos?search=&filter_choice=cat-6-brand-13&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=6&id_marca=12 /productos?search=&filter_choice=cat-6-brand-12&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=6&id_marca=42 /productos?search=&filter_choice=cat-6-brand-42&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=6&id_marca=42 /productos?search=&filter_choice=cat-6-brand-52&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=6&id_marca=58 /productos?search=&filter_choice=cat-6-brand-58&sort=name-asc 
+
+#------------------------------CABLES------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=7&id_marca=5 /productos?search=&filter_choice=cat-7-brand-8&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=7&id_marca=16 /productos?search=&filter_choice=cat-7-brand-16&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=7&id_marca=19 /productos?search=&filter_choice=cat-7-brand-19&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=7&id_marca=18 /productos?search=&filter_choice=cat-7-brand-18&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=7&id_marca=2 /productos?search=&filter_choice=cat-7-brand-2&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=7&id_marca=6 /productos?search=&filter_choice=cat-7-brand-6&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=7&id_marca=4 /productos?search=&filter_choice=cat-7-brand-4&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=7&id_marca=5 /productos?search=&filter_choice=cat-7-brand-5&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=7&id_marca=14 /productos?search=&filter_choice=cat-7-brand-14&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=7&id_marca=7 /productos?search=&filter_choice=cat-7-brand-7&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=7&id_marca=1 /productos?search=&filter_choice=cat-7-brand-1&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=7&id_marca=64 /productos?search=&filter_choice=cat-7
+
+#------------------------------FLEX------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=10&id_marca=5 /productos?search=&filter_choice=cat-10-brand-8&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=10&id_marca=1 /productos?search=&filter_choice=cat-10-brand-1&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=10&id_marca=2 /productos?search=&filter_choice=cat-10-brand-2&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=10&id_marca=6 /productos?search=&filter_choice=cat-10-brand-6&sort=name-asc 
+
+#------------------------------GOMAS Y PERNOS------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=11&id_marca=5 /productos?search=&filter_choice=cat-11-brand-8&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=11&id_marca=64 /productos?search=&filter_choice=cat-11
+
+#------------------------------CINTAS------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=12&id_marca=5 /productos?search=&filter_choice=cat-12-brand-8&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=12&id_marca=19 /productos?search=&filter_choice=cat-12-brand-19&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=12&id_marca=37 /productos?search=&filter_choice=cat-12-brand-19&sort=name-asc 
+
+#------------------------------HERRAMIENTAS------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=14&id_marca=43 /productos?search=&filter_choice=cat-14-brand-43&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=14&id_marca=18 /productos?search=&filter_choice=cat-14-brand-18&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=14&id_marca=44 /productos?search=&filter_choice=cat-14-brand-44&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=14&id_marca=46 /productos?search=&filter_choice=cat-14-brand-46&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=14&id_marca=47 /productos?search=&filter_choice=cat-14-brand-47&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=14&id_marca=37 /productos?search=&filter_choice=cat-14-brand-19&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=14&id_marca=48 /productos?search=&filter_choice=cat-14-brand-48&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=14&id_marca=49 /productos?search=&filter_choice=cat-14-brand-49&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=14&id_marca=53 /productos?search=&filter_choice=cat-14-brand-45&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=14&id_marca=19 /productos?search=&filter_choice=cat-14-brand-19&sort=name-asc 
+
+#------------------------------BATERIAS------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=18&id_marca=5 /productos?search=&filter_choice=cat-18-brand-8&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=18&id_marca=19 /productos?search=&filter_choice=cat-18-brand-19&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=18&id_marca=5 /productos?search=&filter_choice=cat-18-brand-5&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=18&id_marca=1 /productos?search=&filter_choice=cat-18-brand-1&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=18&id_marca=2 /productos?search=&filter_choice=cat-18-brand-2&sort=name-asc 
+
+#------------------------------ACCESORIOS------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=19&id_marca=41 /productos?search=&filter_choice=cat-19-brand-39&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=19&id_marca=19 /productos?search=&filter_choice=cat-19-brand-19&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=19&id_marca=18 /productos?search=&filter_choice=cat-19-brand-18&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=19&id_marca=61 /productos?search=&filter_choice=cat-19-brand-61&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=19&id_marca=64 DJI
+
+#------------------------------COMPONENTES Y CHIPS------------------------------
+Redirect 301 &id_marca=2-brand-2&sort=name-asc HP
+
+#------------------------------ADAPTADORES------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=5 /productos?search=&filter_choice=cat-34-brand-8&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=29 /productos?search=&filter_choice=cat-34-brand-29&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=30 /productos?search=&filter_choice=cat-34-brand-30&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=31 /productos?search=&filter_choice=cat-34-brand-31&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=32 /productos?search=&filter_choice=cat-34-brand-32&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=34 /productos?search=&filter_choice=cat-34-brand-34&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=35 /productos?search=&filter_choice=cat-34-brand-35&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=36 /productos?search=&filter_choice=cat-34-brand-36&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=14 /productos?search=&filter_choice=cat-34-brand-14&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=37 /productos?search=&filter_choice=cat-34-brand-19&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=51 /productos?search=&filter_choice=cat-34-brand-51&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=16 /productos?search=&filter_choice=cat-34-brand-16&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=54 /productos?search=&filter_choice=cat-34-brand-54&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=55 /productos?search=&filter_choice=cat-34-brand-55&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=56 /productos?search=&filter_choice=cat-34-brand-56&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=57 /productos?search=&filter_choice=cat-34-brand-57&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=1 /productos?search=&filter_choice=cat-34-brand-1&sort=name-asc 
+Redirect 301 /public/view/productos.php?id_categoria=34&id_marca=18 /productos?search=&filter_choice=cat-34-brand-18&sort=name-asc 
+
+#------------------------------SEGUNDA------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=36&id_marca=38 /productos?search=&filter_choice=cat-36-brand-38&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=36&id_marca=2 /productos?search=&filter_choice=cat-36-brand-2&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=36&id_marca=6 /productos?search=&filter_choice=cat-36-brand-6&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=36&id_marca=7 /productos?search=&filter_choice=cat-36-brand-7&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=36&id_marca=1 /productos?search=&filter_choice=cat-36-brand-1&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=36&id_marca=5 /productos?search=&filter_choice=cat-36-brand-5-brand-8&sort=name-asc
+
+#------------------------------OTROS REPUESTOS------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=37&id_marca=1 /productos?search=&filter_choice=cat-37-brand-1&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=37&id_marca=5 /productos?search=&filter_choice=cat-37-brand-8&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=37&id_marca=2 /productos?search=&filter_choice=cat-37-brand-2&sort=name-asc-brand-2&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=37&id_marca=4 /productos?search=&filter_choice=cat-37-brand-4&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=37&id_marca=18 /productos?search=&filter_choice=cat-37-brand-18&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=37&id_marca=64 /productos?search=&filter_choice=cat-37
+
+#------------------------------CARCASA------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=38&id_marca=6 /productos?search=&filter_choice=cat-38-brand-6&sort=name-as
+Redirect 301 /public/view/productos.php?id_categoria=38&id_marca=5 /productos?search=&filter_choice=cat-38-brand-5&sort=name-asc
+Redirect 301 /public/view/productos.php?id_categoria=38&id_marca=2 /productos?search=&filter_choice=cat-38-brand-2&sort=name-asc
+
+#------------------------------PANTALLA------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=41&id_marca=18 /productos?search=&filter_choice=cat-8-brand-18&sort=name-asc
+
+#------------------------------MEMORIA USB PENDRIVE------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=42&id_marca=58 /productos?search=&filter_choice=cat-42-brand-58&sort=name-asc
+
+#------------------------------KIT DE MANGO Y BISTURI------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=43&id_marca=59 /productos?search=&filter_choice=cat-43-brand-59&sort=name-asc
+
+#------------------------------ALICATE------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=44&id_marca=60 /productos?search=&filter_choice=cat-44-brand-60&sort=name-asc
+
+#------------------------------THERMAL PADS------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=45&id_marca=61 /productos?search=&filter_choice=cat-45-brand-61&sort=name-asc
+
+#------------------------------PONCHADORA TERMINAL------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=46&id_marca=62 /productos?search=&filter_choice=cat-46-brand-62&sort=name-asc
+
+#------------------------------KIT DE CABLES------------------------------
+Redirect 301 /public/view/productos.php?id_categoria=47&id_marca=63 /productos?search=&filter_choice=cat-47-brand-63&sort=name-asc

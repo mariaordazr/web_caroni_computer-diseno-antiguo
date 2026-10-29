@@ -1,0 +1,2930 @@
+
+
+
+/* =========================================
+   1. VARIABLES Y CONFIGURACIÓN BASE
+   ========================================= */
+:root {
+    --admin-bg-color: #f8f9fa;       /* Fondo general */
+    --sidebar-bg-color: #ffffff;     /* Fondo Sidebar */
+    --sidebar-text-color: #495057;   /* Texto Sidebar */
+    --sidebar-active-bg: #e9ecef;    /* Fondo activo */
+    --sidebar-active-text: #0d6efd;  /* Texto activo */
+    --sidebar-active-icon: #0d6efd;  /* Icono activo */
+    
+    --header-bg-color: #ffffff;      /* Fondo Header */
+    --card-bg-color: #ffffff;        /* Fondo Widgets/Tarjetas */
+    
+    --main-text-color: #212529;
+    --secondary-text-color: #6c757d;
+    --border-color: #dee2e6;
+    --shadow-light: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    
+    --sidebar-width: 260px;
+    --sidebar-collapsed-width: 80px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+body {
+    min-width: 285px;
+    background-color: var(--admin-bg-color);
+    color: var(--main-text-color);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; }
+h1, h2, h3, h4, h5 { margin-bottom: 0.5rem; font-weight: 600; }
+
+
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 500;
+    background-color: #f0f2f5;
+    transition: background-color 0.2s;
+}
+
+.btn:hover { background-color: #e9ecef; }
+
+.btn.btn-primary {justify-content: center; background-color: #0a67f1;color: #fff;}
+.btn.btn-primary:hover { background-color: #0b5ed7; }
+
+
+/* =========================================
+   2. LAYOUT PRINCIPAL (DASHBOARD CONTAINER)
+   ========================================= */
+.dashboard-container {
+    min-width: 285px;
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+.main-content {
+    min-width: 285px;
+    flex-grow: 1;
+    padding: 1.5rem;
+    background-color: var(--admin-bg-color);
+    width: calc(100% - var(--sidebar-width));
+    transition: width 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   3. SIDEBAR (BARRA LATERAL)
+   ========================================= */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg-color);
+    color: var(--sidebar-text-color);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-color);
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+    transition: all 0.3s ease-in-out;
+    z-index: 1000; /* Z-index alto para estar sobre todo */
+}
+
+/* Header del Sidebar (Logo) */
+.sidebar__header {
+    width: 100%;
+    padding:  0;
+    flex-grow: 1;
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* Ajuste: que el header ocupe solo el alto de su contenido y no genere scroll */
+    height: auto;
+    flex: 0 0 auto;
+    overflow-y: visible;
+    max-height: none;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar__logo img {
+    height: 50px;
+    display: block;
+}
+.sidebar__logo picture {
+    height: 50px;
+    display: block;
+}
+
+/* Botón para minimizar sidebar (Escritorio) */
+.sidebar__toggle {
+    position: absolute;
+    top: 50%;
+    right: -12px;
+    transform: translateY(-50%);
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: color 0.3s;
+    color: var(--secondary-text-color);
+    z-index: 10;
+}
+.sidebar__toggle:hover { color: var(--sidebar-active-text); }
+
+/* Botón para cerrar sidebar (Móvil) - Oculto por defecto */
+.sidebar__close-mobile {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--secondary-text-color);
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    top: 1.5rem;
+}
+
+/* Navegación */
+.sidebar__nav {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1.5rem 0 0.5rem 0;
+}
+
+.nav-header {
+    font-size: 0.75rem;
+    color: var(--secondary-text-color);
+    background-color: var(--admin-bg-color);
+    padding: 0.2rem 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+}
+
+.nav-item { margin-bottom: 0.2rem; }
+
+.nav-item a {
+    display: flex;
+    align-items: center;
+    padding: 0.3rem 1.5rem;
+    color: var(--sidebar-text-color);
+    border-radius: 6px;
+    margin: 0 0.75rem;
+    transition: all 0.2s;
+}
+
+.nav-item__profile {
+    padding: 0.3rem 1.5rem;
+    margin: 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: flex-start;
+    background-color: #f8f9fa;
+    flex-shrink: 0; /* Evita que el perfil se aplaste */
+}
+
+.nav-item__profile a {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-self: flex-start;
+    gap: 0.5rem;
+    color: var(--sidebar-text-color);
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.nav-item a i {
+    font-size: 1.2rem;
+    margin-right: 0.8rem;
+    min-width: 24px;
+    text-align: center;
+}
+
+.nav-item a span {font-size: 0.875rem; font-weight: 500; white-space: nowrap; }
+
+/* Estados Hover y Active */
+.nav-item:hover a {
+    background-color: var(--sidebar-active-bg);
+    color: var(--sidebar-active-text);
+}
+
+.nav-item.active a {
+    background-color: var(--sidebar-active-bg);
+    color: var(--sidebar-active-text);
+    font-weight: 600;
+}
+.nav-item.active a i { color: var(--sidebar-active-icon); }
+
+/* Footer del Sidebar (Logout) */
+.sidebar__footer {
+    padding: 0.5rem 1.5rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: auto;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff5f5;
+    color: #dc3545;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.8rem;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+.logout-btn:hover { background-color: #ffe3e3; }
+.logout-btn i { margin-right: 0.6rem; font-size: 1.25rem; }
+
+/* =========================================
+   4. HEADER PRINCIPAL (SUPERIOR)
+   ========================================= */
+.main-header {
+    min-width: 285px;
+}
+
+.main-header-admin {
+    background-color: var(--header-bg-color);
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    height: auto;
+    min-height: 80px;
+    gap: 1rem;
+    position: relative;
+    z-index: 900; /* Debajo del sidebar móvil pero sobre el contenido */
+}
+
+/* Grupo izquierdo: Botón hamburguesa + Textos */
+.header-left-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Botón Hamburguesa (Header) - Oculto en escritorio */
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--main-text-color);
+    padding: 0;
+    line-height: 1;
+}
+
+.header-admin__greeting h3 {
+    font-size: 0.9rem;
+    color: var(--secondary-text-color);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.header-admin__greeting h2 {
+    font-size: 1.2rem;
+    color: var(--text-main);
+    margin: 0;
+    font-weight: 700;
+}
+
+.nav-item { margin-bottom: 0.2rem; }
+
+.nav-item a {
+    display: flex;
+    /* align-items: center; */
+    /* padding: 0.8rem 1.5rem; */
+    color: var(--sidebar-text-color);
+    border-radius: 6px;
+    /* margin: 0 0.75rem; */
+    transition: all 0.2s;
+}
+
+.header-admin__profile span {
+    font-weight: 600;
+    color: var(--main-text-color);
+    font-size: 0.8rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.header-admin__profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    aspect-ratio: 1/1;
+}
+
+.header-admin__profile picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    aspect-ratio: 1/1;
+}
+
+/* =========================================
+   5. VISTA: DASHBOARD (WIDGETS)
+   ========================================= */
+.grid-2-col {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.widget {
+    background-color: var(--card-bg-color);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-light);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: transform 0.2s;
+}
+
+.widget:hover { transform: translateY(-5px); }
+
+.widget__icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+
+.widget__info h3 {
+    font-size: 0.9rem;
+    color: var(--secondary-text-color);
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.widget-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--main-text-color);
+    line-height: 1;
+}
+
+/* =========================================
+   6. MODALES Y ALERTAS (SWEETALERT)
+   ========================================= */
+.swal2-popup { font-family: 'Inter', sans-serif !important; font-size: 0.95rem !important; }
+.swal2-title { color: var(--main-text-color) !important; }
+.swal2-confirm { background-color: var(--sidebar-active-text) !important; box-shadow: none !important; }
+
+/* =========================================
+   7. ESTADOS DEL SIDEBAR EN ESCRITORIO
+   ========================================= */
+.sidebar.sidebar--collapsed { width: var(--sidebar-collapsed-width); }
+.sidebar.sidebar--collapsed .sidebar__logo img { display: none; }
+.sidebar.sidebar--collapsed .sidebar__logo picture { display: none; }
+.sidebar.sidebar--collapsed .sidebar__logo::after { content: 'G'; font-weight: 800; font-size: 1.5rem; color: var(--sidebar-active-text); }
+.sidebar.sidebar--collapsed .nav-header, 
+.sidebar.sidebar--collapsed span { display: none; }
+.sidebar.sidebar--collapsed .nav-item a { justify-content: center; padding: 0.8rem; }
+.sidebar.sidebar--collapsed .nav-item a i { margin-right: 0; }
+.sidebar.sidebar--collapsed .logout-btn { justify-content: center; padding: 0.8rem; }
+.sidebar.sidebar--collapsed .logout-btn i { margin: 0; }
+.sidebar.sidebar--collapsed .sidebar__toggle i { transform: rotate(180deg); }
+.sidebar.sidebar--collapsed ~ .main-content { width: calc(100% - var(--sidebar-collapsed-width)); }
+
+/* =========================================
+   8. RESPONSIVE / MÓVIL (< 768px)
+   ========================================= */
+@media (max-width: 768px) {
+    
+    /* Layout Reset */
+    .dashboard-container { 
+        display: block; 
+    }
+
+    .main-content { 
+        width: 100%; 
+        padding: 1rem;
+        margin-left: 0 !important; /* Forzar margen 0 */
+    }
+
+    /* --- SIDEBAR MÓVIL (Off-Canvas) --- */
+    .sidebar {
+        position: fixed;
+        left: calc(-1 * var(--sidebar-width)); /* Oculto completamente a la izquierda */
+        top: 0;
+        height: 100vh;
+        /* min-height: 100%; */
+        width: var(--sidebar-width);
+        box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+        transition: left 0.3s ease-in-out;
+
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar.mobile-active {
+        min-width: 285px;
+        left: 0; /* Aparece */
+    }
+
+    /* Elementos dentro del sidebar móvil */
+    .sidebar__toggle.desktop-toggle { display: none; } /* Ocultar flecha colapsar */
+    .sidebar__close-mobile { display: block; } /* Mostrar X de cerrar */
+    
+    .sidebar.sidebar--collapsed { width: var(--sidebar-width); } /* Resetear ancho si estaba colapsado */
+    .sidebar.sidebar--collapsed .sidebar__logo img { display: block; } /* Mostrar logo completo */
+    .sidebar.sidebar--collapsed .sidebar__logo picture { display: block; } /* Mostrar logo completo */
+    .sidebar.sidebar--collapsed .sidebar__logo::after { content: none; }
+    .sidebar.sidebar--collapsed span { display: inline; } /* Mostrar textos */
+    .sidebar.sidebar--collapsed .nav-item a { font-size: 0.95rem; justify-content: flex-start; }
+    .nav-item a span { font-size: 0.95rem; }
+    .sidebar.sidebar--collapsed .nav-item a i { margin-right: 0.8rem; }
+
+    .main-header-admin {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+        gap: 1rem;
+        position: sticky;
+        top: 0;
+        border-radius: 0;
+        margin-bottom: 1rem;
+        z-index: 900; /* Asegura que pase por encima de los productos */
+        
+        /* Efecto Blanco Medio Transparentoso Borroso */
+        background-color: rgba(255, 255, 255, 0.7) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important; /* Soporte para Safari */
+    }
+
+    /* Contenedor del Botón Hamburguesa y Textos */
+    .header-left-group {
+        width: 100%; /* Ocupar todo el ancho */
+        justify-content: flex-start; /* Alinear a la izquierda (NO CENTER) */
+        gap: 15px;
+    }
+
+    .mobile-menu-toggle {
+        display: block; /* Mostrar botón hamburguesa */
+    }
+
+    /* Ajuste de textos en móvil */
+    .header-admin__greeting h2 { font-size: 1rem; }
+    .header-admin__greeting h3 { font-size: 0.8rem; }
+
+    /* Perfil en móvil */
+    .header-admin__profile {
+        justify-content: center; 
+        background: transparent;
+        padding: 0.5rem 0.5rem 0.5rem 1rem;
+        
+        /* AÑADE ESTO: Para que no crezca descontroladamente */
+        flex-shrink: 0; 
+    }
+    
+    .header-admin__profile span { 
+        display: inline-block; /* Mostrar email si cabe, o ocultar con 'none' */
+        font-size: 0.8rem;
+    }
+
+    /* --- OVERLAY OSCURO --- */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 999; /* Debajo del sidebar (1000) pero sobre header (900) */
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+    }
+
+    .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Añade/Ajusta esto dentro de @media (max-width: 768px) */
+    .sidebar.sidebar--collapsed .sidebar__nav {
+        flex: 1 1 auto; /* Permite que crezca y se encoja */
+        overflow-y: auto; /* Fuerza el scroll vertical */
+        min-height: 0; /* Vital para que flexbox permita el scroll interno */
+    }
+
+    /* Busca .sidebar__footer en la parte de arriba de tu CSS y verifica que tenga: */
+    .sidebar__footer {
+        padding: 0.5rem 1.5rem;
+        border-top: 1px solid var(--border-color);
+        margin-top: auto; /* Empuja el footer hacia abajo */
+        
+        /* AÑADE ESTO: Evita que el footer desaparezca si el menú es muy largo */
+        flex-shrink: 0; 
+    }
+
+    
+}
+
+/* ==========================================================================
+   1. VARIABLES Y CONFIGURACIÓN BASE (Extraído de admin1.css)
+   ========================================================================== */
+:root {
+    /* Colores Base */
+    --primary-color: #0d6efd;       /* Azul principal */
+    --bg-color: #f8f9fa;            /* Fondo general */
+    --card-bg: #ffffff;             /* Fondo tarjetas */
+    --text-main: #212529;           /* Texto oscuro */
+    --text-secondary: #6c757d;      /* Texto gris */
+    --border-color: #dee2e6;        /* Bordes */
+    --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    --hover-bg: #f8f9fa;          /* Fondo hover */
+    
+    /* Estados */
+    --success-bg: #c8ffca; --success-text: #126225;
+    --danger-bg: #ffb7bd; --danger-text: #6f121b;
+    --warning-bg: #ffd39a; --warning-text: #ba6006;
+    --offer-bg: #ffb7bd;   --offer-text: #6f121b;
+    --new-bg: #fff5ad;     --new-text: #ae7d1b;
+}
+
+/* Panel Contenedor Principal */
+.content-panel {
+    min-width: 285px;
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.5rem;
+}
+
+/* ==========================================================================
+   2. HEADER Y BARRA DE FILTROS (filterbar.php)
+   ========================================================================== */
+
+/* Header de la sección (Título y Botones Superiores) */
+.main-header-admin {
+    min-width: 285px;
+    background-color: var(--card-bg);
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* .header-admin__greeting h2 {
+    font-size: 1.2rem;
+    color: var(--text-main);
+    margin: 0;
+    font-weight: 700;
+} */
+
+.header-admin__actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* Toggle de Vistas (Lista/Grid) */
+.view-toggle {
+    display: flex;
+    background-color: #f0f2f5;
+    border-radius: 8px;
+    padding: 4px;
+    gap: 2px;
+}
+
+.view-toggle__btn {
+    border: none;
+    background: transparent;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.view-toggle__btn.is-active {
+    background-color: #fff;
+    color: var(--primary-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.view-toggle__btn i { font-size: 1.25rem; }
+
+/* ==========================================================================
+   4. BARRA DE FILTROS ADAPTATIVA (FIX UNIFORMIDAD)
+   ========================================================================== */
+
+.filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem; /* Un poco más de espacio entre elementos */
+    width: 100%;
+    background-color: #ffffff;
+    padding: 0;
+    margin:0;
+    flex-wrap: wrap; /* PERMITIR que los elementos bajen si no caben */
+    transition: all 0.3s ease;
+}
+
+/* GRUPO DEL BUSCADOR */
+.filter-group--search {
+    flex: 1;
+    min-width: 200px;
+    width: 100%; /* Ancho mínimo decente */
+    position: relative;
+}
+
+/* GRUPO DE CONTROLES (Selects y botón) */
+.filter-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap; /* Permitir que los selects se acomoden si es necesario */
+}
+
+/* ESTILOS UNIFICADOS (Inputs, Selects, Botón) */
+.filter-bar__search,
+.filter-bar__select,
+.btn-clear-icon {
+    height: 35px; /* Altura fija estandarizada para TODOS */
+    padding: 0 1.2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    margin-bottom: 0;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background-color:  #fff;
+    color: var(--main-text-color);
+    transition: all 0.2s ease;
+    outline: none;
+    display: flex;
+    align-items: center;
+    line-height: normal; /* Resetear line-height para centrado vertical */
+}
+
+/* BUSCADOR */
+.filter-bar__search {
+    width: 100%;
+    padding-left: 1.5rem;
+}
+
+/* SELECTS */
+.filter-bar__select {
+    width: auto;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 2.2rem; /* Espacio flecha */
+    
+    /* Flecha SVG */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%236c757d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 1rem;
+    white-space: nowrap;
+}
+
+.filter-bar__select option {
+    text-transform: lowercase;
+    text-transform: capitalize;
+}
+
+/* BOTÓN LIMPIAR */
+.btn-clear-icon {
+    justify-content: center;
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    color: var(--secondary-text-color);
+    padding: 0; /* Reset padding para centrar icono */
+    width: 35px; /* Cuadrado perfecto */
+    flex-shrink: 0;
+}
+.btn-clear-icon i { font-size: 1.2rem; }
+
+/* ESTADOS */
+.filter-bar__search:hover, .filter-bar__select:hover { background-color: var(---color); }
+.filter-bar__search:focus, .filter-bar__select:focus {
+    background-color: #ffffff;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+.btn-clear-icon:hover { background-color: #fff5f5; color: #dc3545; border-color: #dc3545; }
+
+
+/* --- RESPONSIVE INTELIGENTE --- */
+
+/* 1. PUNTO DE QUIEBRE INTERMEDIO (Laptops pequeñas / Tablets grandes) 
+   Aquí es donde se estaba rompiendo feo. Ahora forzamos un diseño de 2 filas. */
+@media (max-width: 1200px) {
+    .filter-bar {
+        /* border-radius: 16px; Cambiamos píldora por rectángulo redondeado */
+        gap: 0.5rem;
+        padding: 0rem;
+    }
+
+    .filter-group--search {
+        flex-basis: 100%; /* El buscador ocupa toda la primera fila */
+        order: 1; /* Aseguramos que vaya primero */
+        margin-bottom: 0.25rem;
+    }
+
+    .filter-controls {
+        flex: 1;
+        order: 2;
+        justify-content: flex-start; /* Alinear filtros a la izquierda */
+        overflow-x: auto; /* Si aun así no caben, permite scroll horizontal */
+        padding-bottom: 2px; /* Espacio para scrollbar invisible */
+    }
+    
+    /* Ocultar scrollbar feo */
+    .filter-controls::-webkit-scrollbar { display: none; }
+}
+
+
+/* =========================================
+   ESTILOS DEL TOGGLE DE FILTROS (MÓVIL)
+   ========================================= */
+
+/* Por defecto (Escritorio/Tablet): Ocultar el botón toggle */
+.filter-toggle-btn {
+    display: none;
+    font-size: 0.85rem;
+}
+
+/* -----------------------------------------------------------------
+   D. MÓVIL GRANDE (max-width: 768px)
+   ----------------------------------------------------------------- */
+@media (max-width: 768px) {
+
+    /* Estilo del Botón Toggle */
+    .filter-toggle-btn {
+        display: flex; /* Mostrar solo en móvil */
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        background-color: #fff;
+        border: 1px solid var(--border-color);
+        padding: 0.5rem 0.9rem;
+        border-radius: 50px; /* Estilo píldora acorde a tus inputs */
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--main-text-color);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-bottom: 0.5rem;
+    }
+    .filter-group--search {
+        min-width: none;
+    }
+
+    .filter-toggle-btn:hover {
+        background-color: #f8f9fa;
+    }
+
+    .filter-toggle-btn i {
+        font-size: 0.8rem;
+    }
+
+    .filter-toggle-btn .toggle-text {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* Animación de la flecha */
+    .toggle-arrow {
+        transition: transform 0.3s ease;
+    }
+
+    /* Cuando el botón está activo, rotar la flecha */
+    .filter-toggle-btn.is-active .toggle-arrow {
+        transform: rotate(180deg);
+    }
+    
+    .filter-toggle-btn.is-active {
+        background-color: #e7f1ff; /* Un fondo azul muy suave al estar activo */
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    /* Contenedor de Controles (Selects) */
+    .filter-controls {
+        display: none; /* OCULTO por defecto en móvil */
+        width: 100%;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding-top: 0.5rem;
+        animation: fadeIn 0.3s ease;
+    }
+
+    /* Clase para mostrar los controles */
+    .filter-controls.is-visible {
+        display: flex; /* MOSTRAR cuando se activa */
+    }
+}
+
+/* Pequeña animación de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ==========================================================================
+   3. VISTA DE LISTA (products.php - Estilo Mercado Libre)
+   ========================================================================== */
+
+/* Lógica de visualización: Ocultar Grid si estamos en Lista */
+.product-view-container.view-list .product-grid-container { display: none; }
+.product-view-container.view-grid .product-list-container { display: none; }
+
+.product-list-ml {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Tarjeta de Producto en Lista */
+.product-item-ml {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: box-shadow 0.2s, border-color 0.2s;
+    gap: 1.5rem;
+    position: relative;
+}
+
+.product-item-ml:hover {
+    box-shadow: var(--shadow-sm);
+    border-color: #cfd4d9;
+}
+
+/* 3.1. Imagen */
+.product-item-ml__image {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.product-item-ml__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+
+.product-item-ml__image picture {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+
+/* 3.2. Información */
+.product-item-ml__info {
+    flex-grow: 1;
+    min-width: 0; /* Vital para el truncado de texto */
+}
+
+.info__meta {
+    font-size: 0.75rem;
+    color: var(--secondary-text-color);
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.info__title {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--text-main);
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* 3.3. Status (Píldoras) */
+.product-item-ml__status {
+    width: 120px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.compact-row-details {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+/* Estilos Generales de Píldoras */
+.status-pill {
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+}
+
+/* Variantes de Status */
+.status-pill.active { background-color: var(--success-bg); color: var(--success-text); }
+.status-pill.inactive { background-color: #e9ecef; color: var(--text-secondary); }
+.status-pill.offer { background-color: var(--offer-bg); color: var(--offer-text); }
+.status-pill.new { background-color: var(--new-bg); color: var(--new-text); }
+.status-pill.none { background-color: #f6f8fa; color: var(--text-secondary); border: 1px solid var(--border-color); }
+
+/* Dropdowns de estado (Popup) */
+.status-toggle-container, .type-toggle-container { position: relative; width: 100%; }
+
+.status-dropdown, .type-dropdown {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    z-index: 100;
+    min-width: 120px;
+    overflow: hidden;
+}
+
+.status-dropdown.is-active, .type-dropdown.is-active { display: block; }
+
+.status-dropdown a, .type-dropdown a {
+    display: block;
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-main);
+    text-decoration: none;
+    text-align: left;
+}
+
+.status-dropdown a:hover, .type-dropdown a:hover { background-color: #f8f9fa; }
+
+/* 3.4. Precios */
+.product-item-ml__pricing {
+    width: 140px;
+    flex-shrink: 0;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.pricing__offer-stock {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.pricing__offer {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.pricing__original {
+    font-size: 0.875rem;
+    color: var(--text-main);
+}
+
+.pricing__original.has-offer {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    margin-bottom: 0.1rem;
+}
+
+.pricing__stock {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 0.2rem;
+}
+
+/* 3.5. Acciones (3 puntos) */
+.product-item-ml__actions {
+    width: 40px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* .actions-menu-container { position: relative; } */
+
+.actions-menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4rem;
+    color: var(--text-secondary);
+    padding: 0.25rem;
+    border-radius: 50%;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.actions-menu-toggle:hover { background-color: #f0f2f5; color: var(--text-main); }
+
+.actions-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    z-index: 100;
+    min-width: 140px;
+    padding: 0;
+    border: 1px solid var(--border-color);
+}
+
+.actions-dropdown.is-active { display: block; }
+
+.actions-dropdown a {
+    display: block;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+    color: var(--text-main);
+    text-decoration: none;
+    text-align: left;
+}
+
+.actions-dropdown a:hover { background-color: #f8f9fa; }
+.actions-dropdown a.danger { color: #dc3545; }
+.actions-dropdown a.danger:hover { background-color: #fff5f5; }
+
+/* ==========================================================================
+   4. VISTA DE CUADRÍCULA (products.php - Grid View)
+   ========================================================================== */
+.product-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 0rem;
+}
+
+/* .product-card { display: block; } */
+
+.grid-item-card {
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: visible; /* Importante para que los dropdowns se vean */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.grid-item-card:hover {
+    /* transform: translateY(-4px); */
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+}
+
+.grid-item-card__image {
+    width: 100%;
+    max-height: 220px;
+    /* max-width: 220px; */
+    aspect-ratio: 1 / 1;
+    padding: 1.5rem;
+    padding-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid-item-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+.grid-item-card__image picture {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+
+.grid-item-card__content {
+    padding: 0 1rem 1.2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.content__title {
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Reutilización de estilos de precio para Grid */
+.grid-item-card__content .pricing__offer-stock {
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+/* Status en Grid (Horizontal) */
+.product-item-ml__status2 {
+    margin-top: auto; /* Empuja al fondo de la tarjeta */
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.product-item-ml__status2 .status-toggle-container,
+.product-item-ml__status2 .type-toggle-container {
+    flex: 1;
+}
+
+.grid-item-card__actions {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}
+
+
+/* ==========================================================================
+   5. MEDIA QUERIES - RENDERIZADO ADAPTATIVO (4 TIPOS)
+   ========================================================================== */
+
+/* -----------------------------------------------------------------
+   A. LARGE DESKTOP & STANDARD (Por defecto arriba)
+   ----------------------------------------------------------------- */
+@media (max-width: 1615px) {
+    .filter-bar { border-radius: 26px;}
+}
+
+/* -----------------------------------------------------------------
+   B. LAPTOPS / ESCRITORIO PEQUEÑO (max-width: 1200px)
+   ----------------------------------------------------------------- */
+
+   
+@media (max-width: 1200px) {
+    .filter-bar { gap: 0.5rem;}
+    
+    .product-item-ml { padding: 0.8rem; gap: 1rem; }
+    
+    .product-item-ml__status { width: 100px; }
+    .product-item-ml__pricing { width: 120px; }
+}
+
+
+/* -----------------------------------------------------------------
+   C. TABLETS (max-width: 992px)
+   CAMBIO MAYOR: De Fila a Columna Apilada (Stacked)
+   ----------------------------------------------------------------- */
+@media (max-width: 992px) {
+    
+    /* --- Header y Filtros --- */
+    /* Mantenemos esta sección como estaba, ya que afecta al filtro, no a la lista de productos */
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-group--search {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .filter-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .filter-bar__select { flex-grow: 1; }
+
+    /* --- Lista de Productos (Estilo Tarjeta Expandida) --- */
+    .product-item-ml {
+        /* Revertimos el apilado forzado a un diseño de fila con alineación central */
+        flex-direction: column; /* CAMBIO CLAVE: Volver a fila */
+        align-items: center; /* Alineación vertical central */
+        padding: 1rem; /* Revertir a padding estándar */
+        gap: 0.5rem; /* Revertir al gap estándar */
+        position: relative;
+        border-radius: 16px;
+    }
+
+    /* Imagen: Mostrar de nuevo la imagen y darle un ancho fijo */
+    .product-item-ml__image {
+        display: none; /* CAMBIO CLAVE: Mostrar la imagen */
+        /*width: 60px; /* Ancho fijo para la imagen */
+        /*height: 60px; /* Altura fija para la imagen */
+        /*margin: 0; /* Eliminar margen de centrado */
+    }
+
+    /* Información: Permitir que ocupe el espacio restante */
+    .product-item-ml__info {
+        flex-grow: 1; /* Ocupa el espacio restante */
+        width: 100%; /* Permitir que flexbox lo maneje */
+        text-align: left; /* Volver a alinear a la izquierda */
+        border-bottom: none; /* Eliminar el borde inferior */
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+    
+    /* Titulo del producto, para que no salte de línea */
+    .info__title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Estados: Asegurar que se muestre como columna de 2 items */
+    .product-item-ml__status {
+        /* width: 120px; Ancho fijo para los estados */
+        flex-direction: row; /* Columna para que se apilen */
+        justify-content: flex-start;
+        gap: 0.5rem;
+        padding: 0;
+        /*flex-shrink: 0; /* Evita que se encoja */
+    }
+
+    .compact-row-details {
+        display: flex; /* CAMBIO CLAVE: Hace que Status y Pricing estén en fila */
+        width: 100%;
+        justify-content: space-between; /* Espacio entre los grupos */
+        align-items: center;
+        padding-top: 0.5rem;
+    }
+    
+    /* Asegurar que las píldoras ocupen su ancho completo en el contenedor de status */
+    .status-toggle-container, .type-toggle-container {
+        width: 100%;
+    }
+    
+    .status-pill { 
+        width: 100%; 
+        padding: 0.3rem 0.8rem; /* Revertir padding a estándar */
+    }
+
+    /* Precios y Stock: Ancho fijo y alineación a la derecha */
+    .product-item-ml__pricing {
+        /* width: 140px; Ancho fijo para precio/stock */
+        width:auto;
+        flex-direction: row; /* Columna para apilar precio original y stock */
+        align-items: flex-end; /* Alinear a la derecha */
+        border-top: none; /* Eliminar el borde superior */
+        padding-top: 0;
+        margin-top: 0;
+        gap: 0.5rem;
+        /*flex-shrink: 0; /* Evita que se encoja */
+    }
+    
+    .pricing__offer-stock { 
+        align-items: flex-end; /* Asegurar que los precios se alineen a la derecha */
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+    
+    .pricing__original.has-offer { /* Asegurar que el precio original tachado se alinee */
+        margin-bottom: 0.1rem;
+    }
+
+    /* Botón de acciones: Mantenerlo a la derecha */
+    .product-item-ml__actions{
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+    
+
+    .product-item-ml__actions .actions-menu-container {
+        position: relative; /* Ajustar el contenedor para que el dropdown se posicione correctamente */
+    }
+}
+
+
+/* -----------------------------------------------------------------
+   D. MÓVIL GRANDE (max-width: 768px)
+   ----------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .content-panel { padding: 1rem; }
+
+    /* Header apilado */
+    .main-header-admin {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        background-color: #ffffff;
+    }
+    
+    .header-admin__actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    /* Filtros en columna total */
+    .filter-controls {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .filter-bar__select, .btn-clear-icon { width: 100%; }
+
+    /* Ajuste de Grid */
+    .product-grid-container {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1rem;
+    }
+    
+    /* Reducir imagen en lista */
+    .product-item-ml__image { width: 80px; height: 80px; }
+
+    .info__meta, .info__title {
+        margin-right: 2rem; /* Alineado con la imagen */
+    }
+}
+
+
+/* -----------------------------------------------------------------
+   E. MÓVIL PEQUEÑO (max-width: 480px)
+   ----------------------------------------------------------------- */
+@media (max-width: 480px) {
+    /* Grid a 1 columna para legibilidad */
+
+    /* Estados en lista uno debajo del otro */
+    .product-item-ml__status {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .status-pill { width: 100%; }
+
+    /* Ajuste de textos */
+    .pricing__offer { font-size: 1rem; }
+    .info__title { font-size: 0.95rem; }
+    
+    /* Pricing en columna */
+    .product-item-ml__pricing {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    .pricing__offer-stock { align-items: center; }
+}
+
+@media (max-width: 360px) {
+    .header-admin__actions {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .compact-row-details {
+        flex-direction: column;
+    }
+
+    .pricing__offer-stock { 
+        flex-direction: column;
+    }
+}
+
+/* ==========================================================================
+   5. ESTILOS DE CATEGORIES. BRANDS Y USERS
+   ========================================================================== */
+/* 1. Lógica de Alternancia de Vistas (List vs Grid) 
+   Oculta los contenedores específicos de estas vistas según la clase padre */
+.product-view-container.view-list .generic-grid-container { display: none; }
+.product-view-container.view-grid .table-list-ml { display: none; }
+
+/* 2. Contenedor Grid Genérico (Usado en users, brands, categories) */
+.generic-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 0rem;
+}
+
+/* 3. Estilos de Lista "Table Style" (.table-list-ml) */
+.table-list-ml {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.table-item-ml {
+    display: flex;
+    align-items: center;
+    background-color: var(--card-bg-color);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: box-shadow 0.2s, border-color 0.2s;
+    gap: 1.5rem;
+    position: relative;
+}
+
+.table-item-ml a, .product-item-ml a {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+}
+
+.product-item-ml > a, .table-item-ml > a {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;       /* El mismo espacio que tenía el padre */
+    flex-grow: 1;      /* Ocupar todo el espacio disponible a la izquierda de los botones */
+    min-width: 0;      /* CRUCIAL: Permite que el texto truncado (...) funcione dentro de flex */
+    overflow: hidden;  /* Asegura que nada se salga */
+}
+
+/* 3. ARREGLO PARA VISTA CUADRÍCULA (.grid-item-card) */
+.grid-item-card__image a,
+.grid-item-card__image picture {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid-item-card__content > a {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Para que ocupe el alto disponible */
+}
+
+.table-item-ml:hover {
+    box-shadow: var(--shadow-light);
+    border-color: #cfd4d9;
+}
+
+/* --- Columnas Internas de la Lista --- */
+
+/* Info Principal (Nombre/Email) */
+.table-item-ml__info {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+/* Columnas de Fechas (Creado/Modificado) */
+/* .table-item-ml__create,  */
+.table-item-ml__update {
+    width: 200px; /* Ancho fijo para alineación vertical */
+    flex-shrink: 0;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Texto pequeño para fechas */
+.item__cu {
+    font-size: 0.8rem;
+    color: var(--secondary-text-color);
+    white-space: nowrap;
+}
+
+/* Acciones (Botón 3 puntos) en Lista */
+.table-item-ml__actions {
+    width: 40px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* 4. Estilos Específicos para Tarjetas en Grid */
+
+/* Subtítulo en Grid (ej. Username en Users) */
+.grid-item-card__subtitle {
+    font-size: 0.85rem;
+    color: var(--secondary-text-color);
+    margin-top: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Título en Grid (Asegurar consistencia) */
+.grid-item-card__title {
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--main-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* =========================================
+   RESPONSIVE PARA CATEGORIES, BRANDS, USERS
+   ========================================= */
+
+@media (max-width: 992px) {
+    /* Transformar la fila en columna apilada en tablets/móviles */
+    .table-item-ml {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+        gap: 0.8rem;
+    }
+
+    .table-item-ml__info,
+    /* .table-item-ml__create,  */
+    .table-item-ml__update {
+        width: 100%;
+        text-align: left;
+        margin: 0;
+    }
+
+    .product-item-ml > a, .table-item-ml > a {
+        flex-direction: column; /* Apilar elementos verticalmente */
+        align-items: center;    /* Centrar */
+        gap: 0.5rem;
+        width: 100%;            /* Ocupar todo el ancho */
+        text-align: inherit;    /* Heredar la alineación del padre */
+    }
+    
+    /* En tu CSS original ocultas la imagen en móvil en esta resolución,
+       aseguramos que el enlace no genere espacio extra si la imagen no está */
+    .product-item-ml > a .product-item-ml__image , .table-item-ml > a .table-item-ml__image {
+        /* Si tu CSS original oculta la imagen, esto asegura que el enlace respete eso */
+        display: inherit; 
+    }
+
+
+    /* Posicionar el botón de acciones arriba a la derecha en móvil */
+    .table-item-ml__actions {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: auto;
+    }
+    
+    /* Separadores visuales en móvil */
+    /* .table-item-ml__create,  */
+    .table-item-ml__update {
+        border-top: 1px solid var(--border-color);
+        padding-top: 0.5rem;
+    }
+}
+
+/* =========================================
+   9. FORMULARIO DE PRODUCTOS (CREATE/EDIT)
+   ========================================= */
+
+/* --- Layout del Formulario --- */
+.edit-form {
+    padding: 0.5rem 0;
+}
+
+.form-grid {
+    display: grid;
+    /* grid-template-columns: 1fr 1fr; */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Modificador para columnas que ocupan todo el ancho (ej. Imágenes) */
+.form-column.full-width {
+    grid-column: 1 / -1;
+}
+
+/* --- Estilos de Inputs y Labels --- */
+.form-column label , .admin-form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+    color: var(--main-text-color);
+    font-size: 0.8rem;
+}
+
+.form-column input[type="text"], .form-column input[type="number"], .form-column input[type="password"],
+.form-column input[type="email"], .form-column textarea, .form-column select,
+.admin-form-group input[type="text"],.admin-form-group input[type="number"],
+.admin-form-group input[type="password"], .admin-form-group input[type="email"],
+.admin-form-group textarea, .admin-form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-family: 'Inter', sans-serif;
+    background-color: #fff;
+    color: var(--main-text-color);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-column input:focus, .form-column textarea:focus, .form-column select:focus,
+.admin-form-group input:focus, .admin-form-group textarea:focus, .admin-form-group select:focus {
+    border-color: var(--sidebar-active-icon);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+.form-column textarea, .admin-form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* --- Botones de Acción (Guardar/Cancelar) --- */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* =========================================
+   10. GESTOR DE IMÁGENES (DRAG & DROP SLOTS)
+   ========================================= */
+
+.image-manager {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+/* Contenedor flexible con scroll horizontal si es necesario */
+.image-slots-container {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    flex-wrap: nowrap; /* Evita que bajen de línea */
+    overflow-x: auto;  /* Scroll lateral en pantallas pequeñas */
+    padding-bottom: 1rem; /* Espacio para scrollbar */
+    padding-top: 1.5rem; /* Espacio para labels superiores */
+    /* justify-content: center; */
+}
+
+/* Personalización del scrollbar visible */
+.image-slots-container::-webkit-scrollbar {
+    height: 8px; /* Le damos altura a la barra horizontal */
+}
+
+.image-slots-container::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 8px;
+}
+
+.image-slots-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1; 
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.image-slots-container::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8; /* Se oscurece ligeramente al pasar el mouse */
+}
+
+/* --- Slot Individual --- */
+.image-slot {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    flex-shrink: 0; /* Evita que se encojan */
+}
+
+/* Etiqueta de orden (ej. "1 (Portada)") */
+.slot-order-label {
+    position: absolute;
+    top: -1.5rem;
+    left: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--secondary-text-color);
+}
+
+/* Label: actua como el área clickeable (Dropzone) */
+.image-slot label {
+    margin: 0;
+    display: flex; 
+    width: 100%;
+    height: 100%;
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    position: relative;
+    overflow: visible;
+}
+
+.image-slot label:hover {
+    border-color: var(--sidebar-active-icon);
+    background-color: #f0f8ff;
+}
+
+/* Icono más (+) dentro del slot vacío */
+.image-placeholder {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-placeholder i {
+    font-size: 2.5rem;
+    color: #ccc;
+    transition: color 0.2s;
+}
+
+.image-slot label:hover .image-placeholder i {
+    color: var(--sidebar-active-icon);
+}
+
+/* --- Estado con Imagen (Preview) --- */
+
+/* Cuando tiene preview, quitamos el borde dashed del label padre */
+.image-slot.has-preview label {
+    border: none;
+    background-color: transparent;
+}
+
+/* Marco de la imagen cargada */
+.image-preview-frame {
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 4px;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ajusta sin recortar */
+    border-radius: 4px;
+    display: block;
+}
+
+/* Botón X para eliminar imagen */
+.remove-preview-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #fff;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    z-index: 10;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.remove-preview-btn:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* --- Botón de Intercambio (Swap) --- */
+.btn-swap-slot {
+    display: flex;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 32px; 
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    cursor: pointer;
+    margin-top: 60px; /* Alineación vertical manual respecto al slot de 150px */
+    transition: all 0.2s;
+    flex-shrink: 0;
+    color: var(--secondary-text-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.btn-swap-slot:hover {
+    background-color: var(--sidebar-active-icon);
+    border-color: var(--sidebar-active-icon);
+    color: #fff;
+    transform: scale(1.1);
+}
+
+
+@media (max-width: 1180px) {
+    .form-grid {
+        grid-template-columns: 1fr; /* Una sola columna en móvil */
+        /* gap: 1rem; */
+    }
+}
+
+/* =========================================
+   11. RESPONSIVE FORMULARIO
+   ========================================= */
+
+@media (max-width: 992px) {
+    .form-grid {
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr; /* Una sola columna en móvil */
+        gap: 1rem;
+    }
+
+    .image-slot {
+        width: 120px; /* Slots un poco más pequeños en móvil */
+        height: 120px;
+    }
+
+    .btn-swap-slot {
+        margin-top: 45px; /* Reajuste para la altura de 120px */
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+    }
+}
+
+/* =========================================
+   12. GESTOR DE IMAGEN ÚNICA (CATEGORÍAS/MARCAS)
+   ========================================= */
+
+/* Contenedor cuadrado para la imagen de categoría */
+.image-upload-box {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    margin-top: 0.5rem;
+}
+
+/* El label actúa como la zona de clic (Dropzone) */
+.image-upload-box label {
+    margin: 0;
+    display: flex; 
+    width: 100%;
+    height: 100%;
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-sizing: border-box; /* Asegura que el borde no rompa el tamaño */
+}
+
+/* Efecto Hover */
+.image-upload-box label:hover {
+    border-color: var(--sidebar-active-icon);
+    background-color: #f0f8ff;
+}
+
+/* Icono central (+) */
+.image-upload-box .image-placeholder i {
+    font-size: 2.5rem;
+    color: #ccc;
+    transition: color 0.2s;
+}
+
+.image-upload-box label:hover .image-placeholder i {
+    color: var(--sidebar-active-icon);
+}
+
+/* --- Estado con Imagen (Preview) --- */
+/* Importante: Reutiliza la clase .has-preview que tu JS agrega al label */
+
+.image-upload-box.has-preview label {   /* <--- CAMBIO: espacio movido */
+    border: none;
+    background-color: transparent;
+}
+
+/* Quitamos el hover cuando ya hay imagen */
+.image-upload-box.has-preview label:hover { /* <--- CAMBIO: espacio movido */
+    border: none;
+    background-color: transparent;
+}
+
+/* Responsive para móvil (igual que los slots de productos) */
+@media (max-width: 768px) {
+    .image-upload-box {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+/* =========================================
+   13. ESTILOS ESPECÍFICOS ADMIN HOME (admin-home.php)
+   ========================================= */
+
+/* Grupos de formulario con separación visual */
+.admin-form-group {
+    margin-bottom: 1.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.admin-form-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.admin-form-group h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--main-text-color);
+    font-weight: 600;
+}
+
+.admin-form-group p {
+    color: var(--secondary-text-color);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+/* --- Cuadrícula de Checkboxes (Categorías/Marcas) --- */
+/* Basado en .form-grid-admin de admin1.css pero mejorado para responsive */
+.form-grid-admin {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+    background-color: #fff;
+    /* El borde y padding ya los tienes en línea en el PHP, 
+       pero si quisieras pasarlos aquí serían:
+       padding: 1rem; border: 1px solid var(--border-color); border-radius: 8px; 
+    */
+}
+
+.logo_info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+/* Estilo individual del Checkbox */
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.form-check:hover {
+    background-color: #f8f9fa;
+}
+
+.form-check-input {
+    width: auto; /* Un poco más grande para facilitar clic */
+    height: 1.5rem;
+    cursor: pointer;
+    accent-color: var(--sidebar-active-icon); /* Usa tu color azul principal */
+    margin: 0;
+}
+
+.form-check-label {
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: var(--main-text-color);
+    user-select: none;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* --- Estado Deshabilitado (Lógica JS Límite 7 items) --- */
+/* Esto es crucial para que funcione el gris visual cuando se seleccionan 7 */
+.form-check.disabled-item {
+    opacity: 0.5;
+}
+
+.form-check.disabled-item label {
+    color: var(--secondary-text-color);
+    cursor: not-allowed;
+}
+
+.form-check.disabled-item input {
+    cursor: not-allowed;
+}
+
+/* --- Alertas de Error (Validación JS) --- */
+.alert {
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.alert-danger {
+    color: #842029;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+/* --- Ajustes Específicos para Slots de Slider/Banner --- */
+/* Asegura que el contenido interno se ajuste al tamaño definido en el PHP */
+
+.image-preview-slot-frame {
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 4px;
+    position: relative;
+    background-color: #fff;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-preview-slot {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover llena mejor los sliders y banners */
+    border-radius: 4px;
+    display: block;
+}
+
+.image-placeholder-slot {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.image-placeholder-slot i {
+    font-size: 2rem;
+    color: #ccc;
+    transition: color 0.2s;
+}
+
+/* Efecto hover en el banner grande */
+.image-slot:hover .image-placeholder-slot i {
+    color: var(--sidebar-active-icon);
+}
+
+/* Responsive para la cuadrícula de checkboxes */
+@media (max-width: 768px) {
+    .form-grid-admin {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Columna más estrecha en móvil */
+        gap: 0.5rem;
+    }
+
+    .logo_info {
+        grid-template-columns: 1fr;
+    }
+}
+
+.add-image-card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    transition: all 0.2s;
+    box-sizing: border-box;
+}
+
+.add-image-card i {
+    font-size: 2rem;
+    color: #ccc;
+    transition: color 0.2s;
+}
+
+.add-image-card:hover{
+    border: 2px dashed var(--sidebar-active-icon);
+}
+
+/* Efecto hover en el banner grande */
+.add-image-card i:hover {
+    color: var(--sidebar-active-icon);
+}
+
+/* =========================================
+   FIX: Z-INDEX PARA DROPDOWNS EN GRID
+   ========================================= */
+/* Cuando una tarjeta tiene un menú activo, la elevamos sobre las demás */
+.grid-item-card.is-elevated {
+    z-index: 100; 
+    /* Opcional: añade una sombra más fuerte para resaltar */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
+    transform: translateY(-4px); /* Mantiene el efecto hover */
+}
+
+/* Fix rápido para hover (opcional, ayuda visual rápida) */
+.grid-item-card:hover {
+    z-index: 50; 
+}
+
+.form-timestamps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    font-size: 0.85rem;
+    color: var(--secondary-text-color);
+    margin-top: 0.5rem;
+}
+
+.form-timestamps .created-at {
+    justify-self: start;
+}
+
+.form-timestamps .updated-at {
+    justify-self: end;
+}
+
+/* =========================================
+   ESTILOS ESPECÍFICOS ADMIN BLOG
+   ========================================= */
+
+.blog-admin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Reutilizamos .product-item-ml pero con ajustes si es necesario */
+/* .blog-item-header { */
+    /*cursor: default; /* El header no es un link completo como en productos */
+/* } */
+
+/* Botón pequeño dentro de la lista */
+.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-sm:hover {
+    filter: brightness(0.95);
+}
+
+/* Caja de selección multimedia */
+.media-selector-box {
+    background-color: #f8f9fa;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+/* Transición suave al abrir el acordeón */
+.blog-item-body {
+    animation: slideDown 0.3s ease-out;
+    border-top: 1px solid #eee;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Clase para indicar visualmente que está oculto en la lista */
+.product-item-ml.is-hidden, 
+.grid-item-card.is-hidden {
+    opacity: 0.6;
+    background-color: #f9f9f9;
+    border: 1px dashed #ccc;
+}
+/* Opcional: Icono visual */
+.is-hidden .product-item-ml__info::after {
+    content: '(Oculto)';
+    font-size: 0.8rem;
+    color: #d9534f;
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+.ql-toolbar.ql-snow {
+    background-color: #f8f9fa;
+    border-color: var(--border-color);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+.ql-container.ql-snow {
+    border-color: var(--border-color);
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    background-color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+}
+
+/* =========================================
+   AJUSTES PARA EL EDITOR QUILL.JS (TOOLTIP CENTRADO)
+   ========================================= */
+   
+/* 1. Forzar el centrado absoluto dentro del editor */
+.ql-snow .ql-tooltip {
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin-top: 0 !important;
+    padding: 15px 20px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2) !important;
+    border: 1px solid #dee2e6 !important;
+    background-color: #ffffff !important;
+    z-index: 1000 !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 2. Ocultar la pequeña flecha del globo que trae por defecto */
+.ql-snow .ql-tooltip::before {
+    display: none !important;
+}
+
+/* 3. Mejorar el input donde se pega el enlace o video */
+.ql-snow .ql-tooltip input[type=text] {
+    padding: 8px 12px !important;
+    border-radius: 4px !important;
+    border: 1px solid #ccc !important;
+    font-size: 0.95rem !important;
+    width: 250px !important;
+    outline: none;
+}
+.ql-snow .ql-tooltip input[type=text]:focus {
+    border-color: #0d6efd !important;
+}
+
+/* 4. Traducir y mejorar el botón "Save" a "Guardar" */
+.ql-snow .ql-tooltip a.ql-action {
+    margin-left: 0 !important;
+}
+.ql-snow .ql-tooltip a.ql-action::after {
+    content: 'Guardar' !important; 
+    background-color: #0d6efd !important;
+    color: #fff !important;
+    padding: 8px 16px !important;
+    border-radius: 4px !important;
+    font-weight: 500;
+    transition: 0.2s;
+}
+.ql-snow .ql-tooltip a.ql-action:hover::after {
+    background-color: #0b5ed7 !important;
+}
+
+/* 5. Traducir el botón "Remove" a "Quitar" */
+.ql-snow .ql-tooltip a.ql-remove::before {
+    content: 'Quitar' !important; 
+    margin-left: 10px;
+    color: #dc3545 !important;
+    font-weight: bold;
+}
+
+/* =========================================
+   ESTILOS PARA EL CRUD DEL BLOG (VISTAS)
+   ========================================= */
+
+/* --- Vista de Lista y Cuadrícula (blogs.php) --- */
+/* .blog-cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+} */
+/* .blog-grid-meta {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+} */
+/* .blog-grid-status-container {
+    margin-top: auto;
+    padding-top: 10px;
+} */
+/* .blog-status-pill-full {
+    width: 100%;
+} */
+
+/* --- Vistas de Crear y Editar Blog --- */
+/* .blog-header-row {
+    margin-bottom: 1.5rem;
+} */
+/* .blog-form-col-full {
+    margin-top: 1.5rem;
+} */
+/* .blog-image-box {
+    width: 100%;
+    height: 215px;
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all 0.2s;
+} */
+/* .blog-image-label {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+} */
+/* .blog-image-placeholder {
+    text-align: center;
+} */
+/* .blog-image-icon {
+    font-size: 3rem;
+    color: #ccc;
+} */
+/* .blog-image-text {
+    display: block;
+    color: #aaa;
+    margin-top: 10px;
+    font-size: 0.9rem;
+} */
+/* .blog-image-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+} */
+/* .blog-editor-wrapper {
+    height: 450px;
+    background-color: #fff;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+} */
+/* .hidden-file-input {
+    display: none;
+} */
+
+/* =========================================
+   ESTILOS PARA EL CRUD DEL BLOG (VISTAS)
+   ========================================= */
+
+/* --- Vista de Lista y Cuadrícula (blogs.php) --- */
+.blog-cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.blog-grid-meta {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+}
+.blog-grid-status-container {
+    margin-top: auto;
+    padding-top: 10px;
+}
+.blog-status-pill-full {
+    width: 100%;
+}
+
+/* --- Vistas de Crear y Editar Blog --- */
+.blog-header-row {
+    margin-bottom: 1.5rem;
+}
+.blog-form-col-full {
+    margin-top: 1.5rem;
+}
+
+/* Contenedor principal de la imagen */
+.blog-image-box {
+    width: 100%;
+    height: 215px;
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all 0.2s;
+}
+
+/* Lógica de estados para previsualización */
+/* Por defecto, la imagen de previsualización está oculta */
+.blog-image-box .blog-image-preview {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+/* Cuando tiene previsualización, ocultamos el texto y mostramos la imagen */
+/* .blog-image-box.has-preview .blog-image-placeholder {
+    display: none !important;
+} */
+.blog-image-box.has-preview .blog-image-preview {
+    display: block !important;
+}
+
+.blog-image-label {
+    margin: 0;
+    position: absolute; /* Añadido para forzar el centrado exacto */
+    top: 0;             /* Añadido */
+    left: 0;            /* Añadido */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.blog-image-placeholder {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+.blog-image-icon {
+    font-size: 3rem;
+    color: #ccc;
+}
+.blog-image-text {
+    display: block;
+    color: #aaa;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+/* Input de archivo oculto */
+.hidden-file-input {
+    display: none;
+}
+
+
+/* Contenedor principal del editor */
+.blog-editor-wrapper {
+    min-height: 400px; /* Cambiado de 'height' a 'min-height' */
+    background-color: #fff;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    display: flex;
+    flex-direction: column; /* Permite que la barra y el texto se apilen bien */
+}
+
+/* El área de la caja debajo de la barra de herramientas */
+.blog-editor-wrapper .ql-container {
+    flex-grow: 1; /* Hace que el área de texto rellene todo el espacio disponible */
+    min-height: 400px;
+}
+
+/* El área exacta donde está el cursor escribiendo */
+.blog-editor-wrapper .ql-editor {
+    min-height: 400px; /* Evita que se minimice si no hay texto */
+    font-size: 0.9rem; /* Reduce el tamaño de la letra (aprox 14px) */
+    line-height: 1.6;
+}
+
+/* =========================================
+   MENÚ DESPLEGABLE DE ACCIONES (3 Puntos)
+   ========================================= */
+
+.actions-menu-container {
+    position: relative !important; /* CRÍTICO: Esto ancla el menú a este contenedor */
+    display: inline-block;
+}
+
+.actions-dropdown {
+    position: absolute;
+    top: 100%; /* Aparece justo debajo del botón */
+    right: 0;  /* Se alinea hacia la izquierda para no salirse de la pantalla */
+    z-index: 1050 !important; /* Se asegura de estar por encima de cualquier tabla o imagen */
+    min-width: 160px;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    margin: 0; /* Pequeño espacio de separación con el botón */
+}
+
+/* Opcional: Para asegurar que la tabla de recibos no corte el menú si es muy pequeña */
+.table-responsive {
+    overflow: visible !important;
+}
+
+/* Clase dinámica para cuando el menú choca con el borde inferior */
+.actions-dropdown.drop-up {
+    top: auto;
+    bottom: 100%; /* Sube por encima del botón */
+    margin-top: 0;
+    margin-bottom: 0; /* Deja un pequeño margen de separación */
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.15); /* Sombra hacia arriba */
+}
+
+/* =========================================
+   AJUSTES PARA INPUT DE TELÉFONO CON BANDERA
+   ========================================= */
+
+/* 1. El contenedor asume el ancho total y el margen inferior del diseño */
+.iti {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+/* 2. Estilo idéntico al resto de inputs de la clase .edit-form */
+.edit-form .iti input[type="tel"] {
+    width: 100%;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    padding-right: 0.8rem;
+    /* No tocamos el padding-left para que la bandera tenga su espacio */
+    margin-bottom: 0; 
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    color: var(--main-text-color);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    height: auto;
+    font-family: inherit;
+}
+
+/* 3. Comportamiento idéntico al hacer clic (focus) */
+.edit-form .iti input[type="tel"]:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+    background-color: #ffffff;
+}
+
+/* 4. Asegurar que la lista de países se vea por encima de todo */
+.iti__country-list {
+    z-index: 1050;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    font-family: inherit;
+}
+
+/* =========================================
+   ESTILOS PARA EL LISTADO DE RECIBOS
+   ========================================= */
+
+.table-receipts {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.table-receipts thead tr {
+    border-bottom: 2px solid #eee;
+    color: var(--secondary-text-color);
+}
+
+.table-receipts th, 
+.table-receipts td {
+    padding: 1rem;
+}
+
+.table-receipts tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: background 0.2s;
+    font-size: 0.85rem;
+}
+
+.table-receipts .receipt-code {
+    font-weight: bold;
+}
+
+/* Columna de Contacto */
+.receipt-contact-info .contact-email {
+    line-height: 1.2;
+}
+
+.receipt-contact-info .contact-phone {
+    color: #6c757d;
+    font-size: 0.85rem;
+    line-height: 1.2;
+    margin-top: 4px;
+}
+
+/* Columna de Estado */
+.receipt-status-cell {
+    text-align: left;
+    vertical-align: middle;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    line-height: 1.2;
+}
+
+.status-item--whatsapp {
+    margin-top: 4px;
+}
+
+.status-text {
+    font-size: 0.7rem;
+}
+
+.status-text--sent {
+    color: #198754;
+}
+
+.status-text--pending {
+    color: #999;
+}
+
+/* Alineación de acciones */
+.table-receipts .cell-actions {
+    text-align: right;
+}
+
+.table-item-ml__contact {
+    width: auto;
+    flex-shrink: 0; 
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* -------------------------------------------
+   ESTILOS POR DEFECTO (ESCRITORIO)
+   ------------------------------------------- */
+.mobile-view {
+    display: none !important; /* Oculto en escritorio */
+}
+
+/* Si en tu CSS original .image-placeholder tiene display: flex, 
+   asegúrate de que .desktop-view lo mantenga. */
+.desktop-view {
+    display: flex; /* O block, según como lo tengas configurado en tu tema */
+}
+
+/* -------------------------------------------
+   ESTILOS MÓVILES (Pantallas < 768px)
+   ------------------------------------------- */
+@media (max-width: 768px) {
+    .desktop-view {
+        display: none !important; /* Ocultamos el "+" original en móviles */
+    }
+
+    /* Contenedor dividido para el placeholder móvil */
+    .mobile-view.mobile-split {
+        display: flex !important;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        gap: 0;
+    }
+
+    /* Estilos compartidos para las dos mitades */
+    .mobile-split .upload-btn {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        color: #6c757d;
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .mobile-split .upload-btn:hover {
+        background-color: #f8f9fa;
+        color: #0d6efd;
+    }
+
+    .mobile-split .camera-btn {
+        border-bottom: 1px dashed #dee2e6; 
+    }
+
+    .mobile-split .upload-btn i {
+        font-size: 1.8rem;
+        margin-bottom: 2px;
+    }
+
+    .mobile-split .btn-text {
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+}
+
+/* Ocultar ABSOLUTAMENTE todos los placeholders cuando hay una imagen previsualizada */
+.image-slot.has-preview .image-placeholder {
+    display: none !important;
+}
+
+/* =========================================
+   ESTILOS PARA LA PORTADA DE PRODUCTOS
+   ========================================= */
+/* Resaltar el slot cuando es la portada */
+.image-slot.product-slot.is-cover .image-preview-frame {
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.25);
+}
+
+/* Etiqueta inferior de "Portada" */
+.cover-indicator {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    font-size: 0.75rem;
+    padding: 5px 0;
+    font-weight: 600;
+    border-bottom-left-radius: 6px; 
+    border-bottom-right-radius: 6px;
+    z-index: 4;
+}
+
+.image-slot.product-slot.is-cover .cover-indicator {
+    display: block;
+}
+
+/* Botón flotante para "Seleccionar como portada" */
+.btn-set-cover {
+    display: block;
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #333;
+    border: 1px solid var(--border-color);
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    z-index: 5;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-set-cover:hover {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Mostrar el botón en PC al pasar el ratón */
+.image-slot.has-preview:not(.is-cover):hover .btn-set-cover {
+    opacity: 1;
+}
+
+/* Mostrar el botón siempre en pantallas táctiles (Móviles) */
+@media (hover: none) {
+    .image-slot.has-preview:not(.is-cover) .btn-set-cover {
+        opacity: 0.95;
+    }
+}
+
+/* =========================================
+   ESTILOS PARA ARRASTRAR Y SOLTAR (DRAG & DROP)
+   ========================================= */
+.image-slot.has-preview {
+    cursor: grab; /* Cursor de mano abierta */
+}
+
+.image-slot.has-preview:active {
+    cursor: grabbing; /* Cursor de mano cerrada al hacer clic */
+}
+
+.image-slot.is-dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    border: 2px dashed var(--primary-color);
+    z-index: 10;
+    cursor: grabbing;
+}
+
+/* --- FIX PARA SIDEBAR EN MÓVILES --- */
+.sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100dvh !important; /* Altura dinámica real del celular */
+    overflow: hidden;
+}
+.sidebar__nav {
+    flex: 1 1 auto;
+    overflow-y: auto;
+}
+.sidebar__footer {
+    flex-shrink: 0;
+    margin-top: auto;
+    padding-bottom: env(safe-area-inset-bottom, 20px) !important; /* Salva el botón en iPhones */
+    background: var(--sidebar-bg-color);
+    z-index: 10;
+}

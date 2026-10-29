@@ -1,0 +1,8 @@
+estructura_del_proyecto.txt
+httpd.conf.xampp
+gruponet_db.sql
+merge_bd_vieja.php
+migracion_bd_vieja.php
+.env
+vendor/
+/sessions_storage/
